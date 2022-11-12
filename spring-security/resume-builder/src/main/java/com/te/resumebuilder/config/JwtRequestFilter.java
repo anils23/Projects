@@ -32,12 +32,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 
-		// Then we need to get the token from url using
-		// request.getHeader("Authoraization") method.
-		// As we have given our token in Authorization header we need to pass
-		// authoraization as paramameter in the method to get the url
+		// Then we need to get the token from url using request.getHeader("Authoraization") method.
+		// As we have given our token in Authorization header we need to pass authoraization as paramameter in the method to get the url
 		// And if token is not present it will return null
-
+		
 		final String requestTokenHeader = request.getHeader("Authorization");
 
 		String username = null;
@@ -45,8 +43,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		
 		// JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token 
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+			//getting the token.
 			jwtToken = requestTokenHeader.substring(7);
 			try {
+				//getting the username
 				username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			} catch (IllegalArgumentException e) {
 				System.out.println("Unable to get JWT Token");

@@ -1,8 +1,9 @@
 package com.te.resumebuilder.config;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,8 @@ public class JwtUsersDetailService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 	
-
+	
+// this method is used to get the user details
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
@@ -26,7 +28,7 @@ public class JwtUsersDetailService implements UserDetailsService {
 		
 		if (users != null) {
 			return new User(users.getUsername(),users.getPassword(),
-					new ArrayList<>());
+					Arrays.asList(new SimpleGrantedAuthority("ROLE_"+users.getRole())));
 		} else {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}

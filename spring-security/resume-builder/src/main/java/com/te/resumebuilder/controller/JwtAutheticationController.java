@@ -35,18 +35,26 @@ public class JwtAutheticationController {
 	@Autowired
 	private UserServiceImpl userServiceImpl;
 
+	
+//	this  api is used to validate user and create jwt token.
+//  as we have given all the permissions to this API. authentication will not be done.
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-
+        
+//   When we pass username and password to authenticate and create jwt token autheticate method is called to validate it.
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
+		
+//   if details are valid then it will fetch user details using username.
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
+//   using the user detials we will create a token
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 	
+//   this api is used to register the users
+//   as we have given all the permissions to this API. authentication will not be done.
 	@PostMapping("/register")
 	public ResponseEntity<?> saveUsers(@RequestBody UserRequest request){
 		return ResponseEntity.ok(userServiceImpl.saveUser(request));
@@ -54,6 +62,8 @@ public class JwtAutheticationController {
 
 	private void authenticate(String username, String password) throws Exception {
 		try {
+			// If details are valid then control will be transfer back.
+			// else It will throw and exception and terminate the program.
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
 			throw new Exception("USER_DISABLED", e);

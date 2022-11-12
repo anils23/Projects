@@ -1,6 +1,8 @@
 package com.te.resumebuilder.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +18,13 @@ import com.te.resumebuilder.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class ProfileController {
 
-	private final ProfileService service;
+	@Autowired
+	private  ProfileService service;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping("/save-resume")
 	public ResponseEntity<Response> addResumes(@RequestBody ProfileRequest request) {
 		return ResponseEntity.ok(Response.builder().isError(Boolean.FALSE).message(HERE_IS_YOUR_DATA).data(service.addResumes(request)).build());
