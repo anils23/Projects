@@ -1,0 +1,21 @@
+server:
+  port: 9003
+  
+eureka:
+  instance:
+    hostname: localhost 
+    
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+       - id: SUPERHERO-SERVICE
+         uri: lb://SUPERHERO-SERVICE
+         predicates:
+          - Path=/superhero/**
+       - id: AVENGER-SERVICE
+         uri: lb://AVENGER-SERVICE
+         predicates:
+          - Path=/avenger/**
