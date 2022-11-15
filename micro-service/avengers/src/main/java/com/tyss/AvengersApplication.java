@@ -13,5 +13,4 @@ public class AvengersApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AvengersApplication.class, args);
 	}
-
 }
